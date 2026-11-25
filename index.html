@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Banking Management - Suraj Singh</title>
+<style>
+  body { font-family: Arial; background: #0f2027; color: white; text-align: center; }
+  .box { background: white; color: black; width: 350px; margin: 20px auto; padding: 20px; border-radius: 15px; }
+  input, select { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
+  button { padding: 10px; margin: 5px 2px; border: none; border-radius: 8px; color: white; font-size: 15px; cursor: pointer; }
+  .add { background: #2ecc71; width: 100%; }
+  .dep { background: #3498db; }
+  .with { background: #e74c3c; }
+  .check { background: #f39c12; }
+  .acc { background: #f9f9f9; border: 1px solid #ddd; padding: 10px; margin: 8px 0; border-radius: 10px; text-align: left; }
+  #msg { color: green; font-weight: bold; }
+</style>
+</head>
+<body>
+<div class="box">
+  <h2>🏦 Banking Management</h2>
+  <p>Suraj Singh - Project 3</p>
+  <input type="text" id="name" placeholder="Account Holder Name">
+  <input type="number" id="accNo" placeholder="Account Number">
+  <input type="number" id="amount" placeholder="Amount">
+  <button class="add" onclick="createAcc()">Create Account</button>
+  <br>
+  <button class="dep" onclick="deposit()">Deposit</button>
+  <button class="with" onclick="withdraw()">Withdraw</button>
+  <button class="check" onclick="checkBal()">Check Balance</button>
+  <p id="msg"></p>
+  <h3>All Accounts</h3>
+  <div id="list"></div>
+</div>
+<script>
+  var accounts = {};
+  function show() {
+    var html = "";
+    for (var acc in accounts) {
+      html += '<div class="acc"><b>' + accounts[acc].name + '</b><br>Acc No: ' + acc + '<br>Balance: ₹' + accounts[acc].bal + '</div>';
+    }
+    document.getElementById("list").innerHTML = html || "Koi account nahi hai";
+  }
+  function createAcc() {
+    var n = document.getElementById("name").value;
+    var a = document.getElementById("accNo").value;
+    var amt = Number(document.getElementById("amount").value);
+    if (!n || !a) { document.getElementById("msg").textContent = "Name aur Acc No bharo!"; return; }
+    accounts[a] = { name: n, bal: amt };
+    document.getElementById("msg").textContent = "Account Ban Gaya! ✅";
+    show();
+  }
+  function deposit() {
+    var a = document.getElementById("accNo").value;
+    var amt = Number(document.getElementById("amount").value);
+    if (!accounts[a]) { document.getElementById("msg").textContent = "Account nahi mila!"; return; }
+    accounts[a].bal += amt;
+    document.getElementById("msg").textContent = "₹" + amt + " Deposit Ho Gaya!";
+    show();
+  }
+  function withdraw() {
+    var a = document.getElementById("accNo").value;
+    var amt = Number(document.getElementById("amount").value);
+    if (!accounts[a]) { document.getElementById("msg").textContent = "Account nahi mila!"; return; }
+    if (accounts[a].bal < amt) { document.getElementById("msg").textContent = "Balance Kam Hai!"; return; }
+    accounts[a].bal -= amt;
+    document.getElementById("msg").textContent = "₹" + amt + " Withdraw Ho Gaya!";
+    show();
+  }
+  function checkBal() {
+    var a = document.getElementById("accNo").value;
+    if (!accounts[a]) { document.getElementById("msg").textContent = "Account nahi mila!"; return; }
+    document.getElementById("msg").textContent = accounts[a].name + " ka Balance: ₹" + accounts[a].bal;
+  }
+  show();
+</script>
+</body>
+</html>
